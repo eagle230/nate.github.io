@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://github.com/eagle230/nate.github.io/2020/12/22/hello-world%202/</loc>
+    
+    <lastmod>2020-12-22</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://github.com/eagle230/nate.github.io/2020/12/21/hello-world/</loc>
     
     <lastmod>2020-12-22</lastmod>
@@ -59,10 +66,24 @@
     <priority>0.6</priority>
   </url>
   
+  <url>
+    <loc>https://github.com/eagle230/nate.github.io/tags/hexo-test1/</loc>
+    <lastmod>2020-12-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 
   
   <url>
     <loc>https://github.com/eagle230/nate.github.io/categories/test/</loc>
+    <lastmod>2020-12-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://github.com/eagle230/nate.github.io/categories/test1/</loc>
     <lastmod>2020-12-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
