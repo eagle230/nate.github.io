@@ -464,13 +464,13 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
   <script src="//cdn.jsdelivr.net/npm/valine"></script>
   <script type="text/javascript">
   var GUEST = ['nick', 'mail', 'link'];
-  var meta = 'nick,mail,link';
+  var meta = 'nick,mail';
   meta = meta.split(',').filter(function(item) {
     return GUEST.indexOf(item) > -1;
   });
   new Valine({
     el: '#vcomments',
-    verify: false,
+    verify: true,
     notify: true,
     appId: 'Qc9RmLDdymDfcEg2P6bBBgzB-MdYXbMMI',
     appKey: '21udWRLtX2x1SohE7bmemzns',
