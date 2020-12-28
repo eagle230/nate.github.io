@@ -26,7 +26,7 @@
 <meta property="og:description" content="计划1.整理和编写开源代码库目标：方便以后开发移植和帮助自己深入理解实现原理和提高编程能力。   ring buffer 【环形缓冲区】  AT指令【AT发送和解析框架】  GPS Parser【GPS解析库】  log通用打印【方便移植、可设置log等级、可类实现shell功能的通用库】">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-22T12:11:41.963Z">
-<meta property="article:modified_time" content="2020-12-28T09:20:01.706Z">
+<meta property="article:modified_time" content="2020-12-28T09:26:48.311Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="plan">
 <meta name="twitter:card" content="summary">
@@ -258,7 +258,7 @@
                 <a href="/nate.github.io/2020/12/22/Githuh%20Pages%20+%20Hexo/" class="title">Githuh Pages + Hexo 搭建个人博客</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-12-22T07:08:30.090Z" itemprop="datePublished">2020-12-22</time>
+                <time datetime="2020-12-22T12:11:41.962Z" itemprop="datePublished">2020-12-22</time>
               </p>
             </div>
           </li>
@@ -363,6 +363,12 @@
   </article>
   
     
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
 
   
 </div>
@@ -450,6 +456,33 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
    
 
 
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: true,
+    notify: true,
+    appId: 'Qc9RmLDdymDfcEg2P6bBBgzB-MdYXbMMI',
+    appKey: '21udWRLtX2x1SohE7bmemzns',
+    placeholder: 'Just go go',
+    avatar: 'wavatar',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
 
 
 
