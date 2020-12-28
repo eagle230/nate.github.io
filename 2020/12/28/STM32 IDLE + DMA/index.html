@@ -17,21 +17,21 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>Githuh Pages + Hexo 搭建个人博客 | Nate Personal Blog</title>
-  <meta name="description" content="Githuh Pages + Hexo 搭建个人博客本地git配置配置本地git的用户信息12git config --global user.name &quot;Nate&quot; git config --global user.email &quot;287770626@qq.com&quot;  生成ssh密钥文件1ssh-keygen -t rsa -C &quot;28777062">
+  <title>DMA + IDLE中断实现接收不定长数据 | Nate Personal Blog</title>
+  <meta name="description" content="DMA + IDLE中断实现接收不定长数据一、实现原理将串口使能空闲中断并且开启DMA接收（会定义一个数组，这个数组的长度是接收不定长的最大长度），这时候如果当串口产生了中断，判断是否是空闲中断，如果是空闲中断就将计算DMA接收了多少个字节，然后将数据进行处理。一帧接收完成。 二、实现步骤步骤1.初始化串口，使能空闲中断。步骤2.初始化串口的DMA接收，并且开启DMA。步骤3.编写UART中断服务">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Githuh Pages + Hexo 搭建个人博客">
-<meta property="og:url" content="https://github.com/eagle230/nate.github.io/2020/12/22/Githuh%20Pages%20+%20Hexo/index.html">
+<meta property="og:title" content="DMA + IDLE中断实现接收不定长数据">
+<meta property="og:url" content="https://github.com/eagle230/nate.github.io/2020/12/28/STM32%20IDLE%20+%20DMA/index.html">
 <meta property="og:site_name" content="Nate Personal Blog">
-<meta property="og:description" content="Githuh Pages + Hexo 搭建个人博客本地git配置配置本地git的用户信息12git config --global user.name &quot;Nate&quot; git config --global user.email &quot;287770626@qq.com&quot;  生成ssh密钥文件1ssh-keygen -t rsa -C &quot;28777062">
+<meta property="og:description" content="DMA + IDLE中断实现接收不定长数据一、实现原理将串口使能空闲中断并且开启DMA接收（会定义一个数组，这个数组的长度是接收不定长的最大长度），这时候如果当串口产生了中断，判断是否是空闲中断，如果是空闲中断就将计算DMA接收了多少个字节，然后将数据进行处理。一帧接收完成。 二、实现步骤步骤1.初始化串口，使能空闲中断。步骤2.初始化串口的DMA接收，并且开启DMA。步骤3.编写UART中断服务">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-12-22T12:11:41.962Z">
-<meta property="article:modified_time" content="2020-12-28T09:29:13.823Z">
+<meta property="article:published_time" content="2020-12-28T11:49:41.910Z">
+<meta property="article:modified_time" content="2020-12-28T11:51:49.117Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="C Lib">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://github.com/eagle230/nate.github.io/2020/12/22/Githuh%20Pages%20+%20Hexo/index.html">
+  <link rel="canonical" href="https://github.com/eagle230/nate.github.io/2020/12/28/STM32%20IDLE%20+%20DMA/index.html">
   
   
     <link rel="icon" href="https://eagle230.github.io/nate.github.io/favicon.png" type="image/x-icon">
@@ -306,14 +306,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-Githuh Pages + Hexo" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-STM32 IDLE + DMA" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      Githuh Pages + Hexo 搭建个人博客
+      DMA + IDLE中断实现接收不定长数据
     </h1>
   
 
@@ -321,61 +321,37 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/nate.github.io/2020/12/22/Githuh%20Pages%20+%20Hexo/" class="article-date">
-	  <time datetime="2020-12-22T12:11:41.962Z" itemprop="datePublished">2020-12-22</time>
+	<a href="/nate.github.io/2020/12/28/STM32%20IDLE%20+%20DMA/" class="article-date">
+	  <time datetime="2020-12-28T11:49:41.910Z" itemprop="datePublished">2020-12-28</time>
 	</a>
 </span>
         
   <span class="article-category">
     <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/nate.github.io/categories/Hexo/">Hexo</a>
+    <a class="article-category-link" href="/nate.github.io/categories/C-Lib/">C Lib</a>
   </span>
 
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link-link" href="/nate.github.io/tags/Hexo/" rel="tag">Hexo</a>
+	<a class="article-tag-link-link" href="/nate.github.io/tags/C-Lib/" rel="tag">C Lib</a>
   </span>
 
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/nate.github.io/2020/12/22/Githuh%20Pages%20+%20Hexo/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/nate.github.io/2020/12/28/STM32%20IDLE%20+%20DMA/#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="Githuh-Pages-Hexo-搭建个人博客"><a href="#Githuh-Pages-Hexo-搭建个人博客" class="headerlink" title="Githuh Pages + Hexo 搭建个人博客"></a>Githuh Pages + Hexo 搭建个人博客</h1><h2 id="本地git配置"><a href="#本地git配置" class="headerlink" title="本地git配置"></a>本地git配置</h2><h3 id="配置本地git的用户信息"><a href="#配置本地git的用户信息" class="headerlink" title="配置本地git的用户信息"></a>配置本地git的用户信息</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;Nate&quot;</span> </span><br><span class="line">git config --global user.email <span class="string">&quot;287770626@qq.com&quot;</span> </span><br></pre></td></tr></table></figure>
-<h3 id="生成ssh密钥文件"><a href="#生成ssh密钥文件" class="headerlink" title="生成ssh密钥文件"></a>生成ssh密钥文件</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;287770626@qq.com&quot;</span></span><br></pre></td></tr></table></figure>
-<p>期间会让你选择保存的目录，推荐使默认文件名，那么就会生成 id_rsa 和 id_rsa.pub 两个秘钥文件。<br>接着又会提示你输入两次密码（该密码是你push文件的时候要输入的密码，而不是github管理者的密码），当然，你也可以不输入密码，直接按回车。那么push的时候就不需要输入密码，直接提交到github上了。所以就是三个回车即可。</p>
-<h3 id="配置github的ssh"><a href="#配置github的ssh" class="headerlink" title="配置github的ssh"></a>配置github的ssh</h3><p>找到本地用户里面的id_rsa.pub，打开并且在Github Seting里面设置好ssh。</p>
-<h3 id="测试git与github关联情况"><a href="#测试git与github关联情况" class="headerlink" title="测试git与github关联情况"></a>测试git与github关联情况</h3><p>执行命令：ssh -T <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#105;&#x74;&#104;&#x75;&#98;&#x2e;&#99;&#111;&#x6d;">&#103;&#105;&#116;&#x40;&#103;&#105;&#x74;&#104;&#x75;&#98;&#x2e;&#99;&#111;&#x6d;</a></p>
-<h2 id="创建github-pages-仓库"><a href="#创建github-pages-仓库" class="headerlink" title="创建github pages 仓库"></a>创建github pages 仓库</h2><p>创建一个github page仓库，名字格式必须为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username.github.io</span><br></pre></td></tr></table></figure>
-<h2 id="克隆仓库到本地"><a href="#克隆仓库到本地" class="headerlink" title="克隆仓库到本地"></a>克隆仓库到本地</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:eagle230&#x2F;nate.github.io.git</span><br></pre></td></tr></table></figure>
-<h2 id="安装Hexo和Nodejs"><a href="#安装Hexo和Nodejs" class="headerlink" title="安装Hexo和Nodejs"></a>安装Hexo和Nodejs</h2><h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><p>1、Node.js (Node.js 版本需不低于 10.13，建议使用 Node.js 12.0 及以上版本)<br>2、Git</p>
-<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>1.新建个blog目录，在此处执行cmd，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i hexo-cli -g </span><br></pre></td></tr></table></figure>
-<p>开始安装hexo<br>2.输入npm install安装必备的组件<br>3.hexo g 生成静态<br>4.hexo s 开启服务<br>5.打开<a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000</a><br>6.新建一篇博客，在cmd执行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new post “hello world”</span><br></pre></td></tr></table></figure>
-<p>7.在生成以及部署文章之前，需要安装一个扩展：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-<p>8.编辑根目录下_config.yml文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:linton6&#x2F;linton.github.io.git # 填写自己的仓库地址</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-<p>9.加载博客样式文件 (搭建的时候遇到的坑)</p>
-<p>需要修改_config.yml文件中的url地址和根目录</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">url：是github Page给我们分配的网址</span><br><span class="line">root：是搭建该博客的仓库名</span><br></pre></td></tr></table></figure>
-<p>10.更改主题<br>github下载好主题XXX后放在themes目录下，然后编辑站点的_config.yml中的theme: XXX<br>11.更改网页图标（更改完整路径，遇到的坑）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:cofess&#x2F;hexo-theme-pure.git themes&#x2F;pure</span><br></pre></td></tr></table></figure>
-<p>更改主题中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">favicon: https:&#x2F;&#x2F;eagle230.github.io&#x2F;nate.github.io&#x2F;favicon.png</span><br></pre></td></tr></table></figure>
-<p>12.hexo g ，生成新的静态网页文件。<br>13.执行hexo d 上传到github上。<br>14.打开<a target="_blank" rel="noopener" href="https://eagle230.github.io/nate.github.io/%E5%B0%B1%E7%9C%8B%E5%88%B0%E4%BA%86%E7%BD%91%E9%A1%B5%E3%80%82">https://eagle230.github.io/nate.github.io/就看到了网页。</a></p>
-<h3 id="写博客"><a href="#写博客" class="headerlink" title="写博客"></a>写博客</h3><p>直接在port文件里面添加md格式的文件即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 个人能力提升计划</span><br><span class="line">categories:</span><br><span class="line">  - plan # 分类</span><br><span class="line">tags:</span><br><span class="line">  - plan # 标签</span><br><span class="line"># toc: true # 是否启用内容索引</span><br><span class="line">comments: true # 是否开启评论功能</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p>参考链接：</p>
-<p>[]: <a target="_blank" rel="noopener" href="https://blog.csdn.net/linton1/article/details/90137367">https://blog.csdn.net/linton1/article/details/90137367</a></p>
-
+        <h1 id="DMA-IDLE中断实现接收不定长数据"><a href="#DMA-IDLE中断实现接收不定长数据" class="headerlink" title="DMA + IDLE中断实现接收不定长数据"></a>DMA + IDLE中断实现接收不定长数据</h1><h2 id="一、实现原理"><a href="#一、实现原理" class="headerlink" title="一、实现原理"></a>一、实现原理</h2><p>将串口使能空闲中断并且开启DMA接收（会定义一个数组，这个数组的长度是接收不定长的最大长度），这时候如果当串口产生了中断，判断是否是空闲中断，如果是空闲中断就将计算DMA接收了多少个字节，然后将数据进行处理。一帧接收完成。</p>
+<h2 id="二、实现步骤"><a href="#二、实现步骤" class="headerlink" title="二、实现步骤"></a>二、实现步骤</h2><p>步骤1.初始化串口，使能空闲中断。<br>步骤2.初始化串口的DMA接收，并且开启DMA。<br>步骤3.编写UART中断服务函数。</p>
+<h2 id="三、相关代码"><a href="#三、相关代码" class="headerlink" title="三、相关代码"></a>三、相关代码</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief USART2 Initialization Function</span></span><br><span class="line"><span class="comment">  * @param None</span></span><br><span class="line"><span class="comment">  * @retval None</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">MX_USART2_UART_Init</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN USART2_Init 0 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END USART2_Init 0 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN USART2_Init 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END USART2_Init 1 */</span></span><br><span class="line">  huart2.Instance = USART2;</span><br><span class="line">  huart2.Init.BaudRate = <span class="number">19200</span>;</span><br><span class="line">  huart2.Init.WordLength = UART_WORDLENGTH_8B;</span><br><span class="line">  huart2.Init.StopBits = UART_STOPBITS_1;</span><br><span class="line">  huart2.Init.Parity = UART_PARITY_NONE;</span><br><span class="line">  huart2.Init.Mode = UART_MODE_TX_RX;</span><br><span class="line">  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;</span><br><span class="line">  huart2.Init.OverSampling = UART_OVERSAMPLING_16;</span><br><span class="line">  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;</span><br><span class="line">  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;</span><br><span class="line">  <span class="keyword">if</span> (HAL_UART_Init(&amp;huart2) != HAL_OK)</span><br><span class="line">  &#123;</span><br><span class="line">    Error_Handler();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN USART2_Init 2 */</span></span><br><span class="line">  HAL_UART_Receive_DMA(&amp;huart2,&amp;RxBuff[<span class="number">0</span>],RX_BUFFER_LEN);</span><br><span class="line">  __HAL_UART_ENABLE_IT(&amp;huart2,UART_IT_IDLE);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END USART2_Init 2 */</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="中断服务函数增加自己的处理函数"><a href="#中断服务函数增加自己的处理函数" class="headerlink" title="中断服务函数增加自己的处理函数"></a>中断服务函数增加自己的处理函数</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief This function handles USART2 global interrupt.</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">USART2_IRQHandler</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN USART2_IRQn 0 */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END USART2_IRQn 0 */</span></span><br><span class="line">  HAL_UART_IRQHandler(&amp;huart2);</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN USART2_IRQn 1 */</span></span><br><span class="line">  UART_IDLE_IRQHandler(&amp;huart2);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END USART2_IRQn 1 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="编写的接收不定长函数"><a href="#编写的接收不定长函数" class="headerlink" title="编写的接收不定长函数"></a>编写的接收不定长函数</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	DMA+串口空闲中断接收不定长</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">UART_IDLE_IRQHandler</span><span class="params">(UART_HandleTypeDef *huart)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(huart-&gt;Instance == USART2)                                   <span class="comment">//判断是否是串口2</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(RESET != __HAL_UART_GET_FLAG(&amp;huart2, UART_FLAG_IDLE))   <span class="comment">//判断是否是空闲中断</span></span><br><span class="line">        &#123;</span><br><span class="line">			 __HAL_UART_CLEAR_IDLEFLAG(&amp;huart2);                     <span class="comment">//清楚空闲中断标志</span></span><br><span class="line">			HAL_UART_DMAStop(&amp;huart2);  </span><br><span class="line">			RxLen = (RX_BUFFER_LEN - __HAL_DMA_GET_COUNTER(&amp;hdma_usart2_rx));</span><br><span class="line">			HAL_UART_Transmit(&amp;huart3,(<span class="keyword">uint8_t</span>*)&amp;RxBuff,RxLen, <span class="number">5000</span>);</span><br><span class="line">			HAL_UART_Receive_DMA(&amp;huart2,&amp;RxBuff[<span class="number">0</span>],RX_BUFFER_LEN);</span><br><span class="line">			RxLen = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="重定向printf到uart"><a href="#重定向printf到uart" class="headerlink" title="重定向printf到uart"></a>重定向printf到uart</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	重定向printf</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fputc</span><span class="params">(<span class="keyword">int</span> ch, FILE* stream)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    HAL_UART_Transmit(&amp;huart2,(<span class="keyword">uint8_t</span>*)&amp;ch, <span class="number">1</span>, <span class="number">5000</span>);</span><br><span class="line">    <span class="keyword">return</span> ch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <div class="article-footer">
@@ -384,7 +360,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://github.com/eagle230/nate.github.io/2020/12/22/Githuh%20Pages%20+%20Hexo/" title="Githuh Pages + Hexo 搭建个人博客" target="_blank" rel="external">https://github.com/eagle230/nate.github.io/2020/12/22/Githuh%20Pages%20+%20Hexo/</a>
+      <a href="https://github.com/eagle230/nate.github.io/2020/12/28/STM32%20IDLE%20+%20DMA/" title="DMA + IDLE中断实现接收不定长数据" target="_blank" rel="external">https://github.com/eagle230/nate.github.io/2020/12/28/STM32%20IDLE%20+%20DMA/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -430,10 +406,10 @@
   
   <ul class="pager pull-left">
     
-    <li class="prev">
-      <a href="/nate.github.io/2020/12/22/plan/" title="个人提升计划"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
-    </li>
     
+    <li class="next">
+      <a href="/nate.github.io/2020/12/28/GNRMC%20Parser/" title="GNRMC定位信息的读取与解析"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
     
     
   </ul>

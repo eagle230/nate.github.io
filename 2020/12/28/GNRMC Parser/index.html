@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>GNRMC定位信息的读取与解析 | Nate Personal Blog</title>
+  <meta name="description" content="GNRMC定位信息的读取与解析格 式：  12$GPRMC,&lt;1&gt;,&lt;2&gt;,&lt;3&gt;,&lt;4&gt;,&lt;5&gt;,&lt;6&gt;,&lt;7&gt;,&lt;8&gt;,&lt;9&gt;,&lt;10&gt;,&lt;11&gt;,&lt;12&gt;*hh&lt;CR&gt;&lt;LF&gt;$GPRMC,024813.640,A,3158.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GNRMC定位信息的读取与解析">
+<meta property="og:url" content="https://github.com/eagle230/nate.github.io/2020/12/28/GNRMC%20Parser/index.html">
+<meta property="og:site_name" content="Nate Personal Blog">
+<meta property="og:description" content="GNRMC定位信息的读取与解析格 式：  12$GPRMC,&lt;1&gt;,&lt;2&gt;,&lt;3&gt;,&lt;4&gt;,&lt;5&gt;,&lt;6&gt;,&lt;7&gt;,&lt;8&gt;,&lt;9&gt;,&lt;10&gt;,&lt;11&gt;,&lt;12&gt;*hh&lt;CR&gt;&lt;LF&gt;$GPRMC,024813.640,A,3158.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-28T11:45:09.531Z">
+<meta property="article:modified_time" content="2020-12-28T11:46:34.763Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="C Lib">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://github.com/eagle230/nate.github.io/2020/12/28/GNRMC%20Parser/index.html">
+  
+  
+    <link rel="icon" href="https://eagle230.github.io/nate.github.io/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/nate.github.io/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/nate.github.io/atom.xml" title="Nate Personal Blog" type="application/atom+xml">
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/eagle230" target="_blank">
+          <img class="img-circle img-rotate" src="/nate.github.io/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Nate</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Embedded Software Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Xiamen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/nate.github.io/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/nate.github.io/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/nate.github.io/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/nate.github.io/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/nate.github.io/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/nate.github.io/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/eagle230" target="_blank" title="Github" ><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/u/2773473047?is_all=1" target="_blank" title="Weibo" ><i class="icon icon-weibo"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/nate.github.io/categories/C-Lib/">C Lib</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/nate.github.io/categories/Hexo/">Hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/nate.github.io/categories/plan/">plan</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/nate.github.io/tags/C-Lib/" rel="tag">C Lib</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/nate.github.io/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/nate.github.io/tags/plan/" rel="tag">plan</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/nate.github.io/tags/C-Lib/" style="font-size: 14px;">C Lib</a> <a href="/nate.github.io/tags/Hexo/" style="font-size: 13px;">Hexo</a> <a href="/nate.github.io/tags/plan/" style="font-size: 13px;">plan</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/nate.github.io/archives/2020/12/">十二月 2020</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/nate.github.io/categories/C-Lib/">C Lib</a>
+              </p>
+              <p class="item-title">
+                <a href="/nate.github.io/2020/12/28/STM32%20IDLE%20+%20DMA/" class="title">DMA + IDLE中断实现接收不定长数据</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-28T11:49:41.910Z" itemprop="datePublished">2020-12-28</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/nate.github.io/categories/C-Lib/">C Lib</a>
+              </p>
+              <p class="item-title">
+                <a href="/nate.github.io/2020/12/28/GNRMC%20Parser/" class="title">GNRMC定位信息的读取与解析</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-28T11:45:09.531Z" itemprop="datePublished">2020-12-28</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/nate.github.io/categories/plan/">plan</a>
+              </p>
+              <p class="item-title">
+                <a href="/nate.github.io/2020/12/22/plan/" class="title">个人提升计划</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-22T12:11:41.963Z" itemprop="datePublished">2020-12-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/nate.github.io/categories/Hexo/">Hexo</a>
+              </p>
+              <p class="item-title">
+                <a href="/nate.github.io/2020/12/22/Githuh%20Pages%20+%20Hexo/" class="title">Githuh Pages + Hexo 搭建个人博客</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-22T12:11:41.962Z" itemprop="datePublished">2020-12-22</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-GNRMC Parser" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      GNRMC定位信息的读取与解析
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/nate.github.io/2020/12/28/GNRMC%20Parser/" class="article-date">
+	  <time datetime="2020-12-28T11:45:09.531Z" itemprop="datePublished">2020-12-28</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/nate.github.io/categories/C-Lib/">C Lib</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/nate.github.io/tags/C-Lib/" rel="tag">C Lib</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/nate.github.io/2020/12/28/GNRMC%20Parser/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="GNRMC定位信息的读取与解析"><a href="#GNRMC定位信息的读取与解析" class="headerlink" title="GNRMC定位信息的读取与解析"></a>GNRMC定位信息的读取与解析</h1><p><strong>格 式：</strong> </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$GPRMC,&lt;<span class="number">1</span>&gt;,&lt;<span class="number">2</span>&gt;,&lt;<span class="number">3</span>&gt;,&lt;<span class="number">4</span>&gt;,&lt;<span class="number">5</span>&gt;,&lt;<span class="number">6</span>&gt;,&lt;<span class="number">7</span>&gt;,&lt;<span class="number">8</span>&gt;,&lt;<span class="number">9</span>&gt;,&lt;<span class="number">10</span>&gt;,&lt;<span class="number">11</span>&gt;,&lt;<span class="number">12</span>&gt;*hh&lt;CR&gt;&lt;LF&gt;</span><br><span class="line">$GPRMC,<span class="number">024813.640</span>,A,<span class="number">3158.4608</span>,N,<span class="number">11848.3737</span>,E,<span class="number">10.05</span>,<span class="number">324.27</span>,<span class="number">150706</span>,,,A*<span class="number">50</span></span><br></pre></td></tr></table></figure>
+<p><strong>说 明：</strong></p>
+<blockquote>
+<p>字段 0：$GPRMC，语句ID，表明该语句为Recommended Minimum Specific GPS/TRANSIT Data（RMC）推荐最小定位信息<br>字段 1：UTC时间，hhmmss.sss格式<br>字段 2：状态，A=定位，V=未定位<br>字段3：纬度ddmm.mmmm，度分格式（前导位数不足则补0）<br>字段 4：纬度N（北纬）或S（南纬）<br>字段 5：经度dddmm.mmmm，度分格式（前导位数不足则补0）<br>字段 6：经度E（东经）或W（西经）<br>字段 7：速度，节，Knots（一节也是1.852千米／小时）<br>字段 8：方位角，度（二维方向指向，相当于二维罗盘）<br>字段 9：UTC日期，DDMMYY格式<br>字段10：磁偏角，（000 - 180）度（前导位数不足则补0）<br>字段11：磁偏角方向，E=东，W=西<br>字段12：模式，A=自动，D=差分，E=估测，N=数据无效（3.0协议内容）<br>字段13：校验值，</p>
+</blockquote>
+<blockquote>
+<p>这里，“ * ”为校验和识别符，其后面的两位数为校验和代表了“$”和“*”之间所有字符（不包括这两个字符）的异或值的十六进制值</p>
+</blockquote>
+<p><strong>结构体定义：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> year;</span><br><span class="line">    <span class="keyword">int</span> mounth;</span><br><span class="line">    <span class="keyword">int</span> day;</span><br><span class="line">&#125; data_struct;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> hour;</span><br><span class="line">    <span class="keyword">int</span> minute;</span><br><span class="line">    <span class="keyword">int</span> second;</span><br><span class="line">    <span class="keyword">int</span> milliSecond;</span><br><span class="line">&#125; time_struct;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    data_struct utcDate;</span><br><span class="line">    time_struct utcTime;</span><br><span class="line">    <span class="keyword">float</span>  lat;			<span class="comment">//纬度</span></span><br><span class="line">	<span class="keyword">float</span>  lon;			<span class="comment">//经度</span></span><br><span class="line">    <span class="keyword">float</span>  speed;</span><br><span class="line">    <span class="keyword">float</span>  direction;</span><br><span class="line">    <span class="keyword">float</span>  declination;</span><br><span class="line">    <span class="keyword">char</span>    ew;</span><br><span class="line">    <span class="keyword">char</span>    ns;</span><br><span class="line">    <span class="keyword">char</span>    status;</span><br><span class="line">    <span class="keyword">char</span>    declin_ew;</span><br><span class="line">    <span class="keyword">char</span>    mode;</span><br><span class="line">&#125; gps_gprmc_struct;</span><br></pre></td></tr></table></figure>
+<p><strong>GPS输出格式：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*GPS数据如下</span></span><br><span class="line"><span class="comment">$GPGGA,121252.000,3937.3032,N,11611.6046,E,1,05,2.0,45.9,M,-5.7,M,,0000*77 </span></span><br><span class="line"><span class="comment">$GPRMC,121252.000,A,3958.3032,N,11629.6046,E,15.15,359.95,070306,,,A*54 </span></span><br><span class="line"><span class="comment">$GPVTG,359.95,T,,M,15.15,N,28.0,K,A*04 </span></span><br><span class="line"><span class="comment">$GPGGA,121253.000,3937.3090,N,11611.6057,E,1,06,1.2,44.6,M,-5.7,M,,0000*72 </span></span><br><span class="line"><span class="comment">$GPGSA,A,3,14,15,05,22,18,26,,,,,,,2.1,1.2,1.7*3D </span></span><br><span class="line"><span class="comment">$GPGSV,3,1,10,18,84,067,23,09,67,067,27,22,49,312,28,15,47,231,30*70 </span></span><br><span class="line"><span class="comment">$GPGSV,3,2,10,21,32,199,23,14,25,272,24,05,21,140,32,26,14,070,20*7E </span></span><br><span class="line"><span class="comment">$GPGSV,3,3,10,29,07,074,,30,07,163,28*7D</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p><strong>经纬度转换公式：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$GPRMC,<span class="number">121252.000</span>,A,<span class="number">3958.3032</span>,N,<span class="number">11629.6046</span>,E,<span class="number">15.15</span>,<span class="number">359.95</span>,<span class="number">070306</span>,,,A*<span class="number">54</span> </span><br><span class="line">lat = <span class="number">3958.3032</span>;	ddmm.mmmm  度分格式</span><br><span class="line">lon = <span class="number">11629.6046</span>;	dddmm.mmmm 度分格式</span><br><span class="line">度分格式转换成度格式dd.ddddd    <span class="number">1</span>度=<span class="number">60</span>分</span><br><span class="line"><span class="number">3958.3032</span> 取出mm.mmmm 也就是<span class="number">58.3032</span>，转换成度 <span class="number">58.3032</span>/<span class="number">60</span> = <span class="number">0.97172</span> ，最后等于<span class="number">39.97172</span> </span><br><span class="line"><span class="number">11629.6046</span>取出mm.mmmm 也就是<span class="number">29.6046</span>，转换成度 <span class="number">29.6046</span>/<span class="number">60</span> = <span class="number">0.49341</span> ，最后等于<span class="number">116.49341</span></span><br></pre></td></tr></table></figure>
+<p><strong>解析函数：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">GPS_Parse</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">uint16_t</span> grmc_len;</span><br><span class="line">	<span class="keyword">int</span> ret = <span class="literal">false</span>;</span><br><span class="line">	<span class="keyword">uint8_t</span> ret_crc = <span class="number">0</span>,ret_sscanf = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">char</span>* p_grmc;</span><br><span class="line">	NRF_LOG_INFO(<span class="string">&quot;gps.gps_info.BuffIndex:%d\r\n&quot;</span>,gps.gps_info.BuffIndex);</span><br><span class="line"><span class="comment">//	NRF_LOG_INFO(&quot;GPS_recv : %s\r\n&quot;,gps.gps_info.UartBuff);</span></span><br><span class="line">	<span class="keyword">if</span> ((p_grmc = <span class="built_in">strstr</span>((<span class="keyword">char</span>*)&amp;gps.gps_info.UartBuff[<span class="number">0</span>], <span class="string">&quot;$GNRMC&quot;</span>)) != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (grmc_len = <span class="number">0</span>; grmc_len&lt;<span class="built_in">strlen</span>(p_grmc); grmc_len++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (p_grmc[grmc_len] == <span class="string">&#x27;\r&#x27;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">            	p_grmc[grmc_len] = <span class="string">&#x27;\0&#x27;</span>; <span class="comment">//replace ‘/n’ with null</span></span><br><span class="line">            	<span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; </span><br><span class="line">        NRF_LOG_INFO(<span class="string">&quot;grmc_len: %d\r\n&quot;</span>,grmc_len);</span><br><span class="line">        NRF_LOG_INFO(<span class="string">&quot;GPS_Parse : %s\r\n&quot;</span>,p_grmc);</span><br><span class="line">        ret_crc = GpsFrameCheck(p_grmc,grmc_len);<span class="comment">///帧校验</span></span><br><span class="line">        <span class="keyword">if</span>(ret_crc == <span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">        <span class="built_in">memset</span>(&amp;gps.gprmc, <span class="number">0</span>, <span class="keyword">sizeof</span>(gps_gprmc_struct));</span><br><span class="line">        ret_sscanf = <span class="built_in">sscanf</span> (p_grmc, <span class="string">&quot;$GNRMC,%2d%2d%2d.%3d,%c,%f,%c,%f,%c,%f,%f,%2d%2d%2d,%f,%c,%c*&quot;</span>, \</span><br><span class="line">        				&amp; gps.gprmc.utcTime.hour, &amp; gps.gprmc.utcTime.minute, &amp; gps.gprmc.utcTime.second, &amp; gps.gprmc.utcTime.milliSecond, \</span><br><span class="line">        				&amp; gps.gprmc.status, &amp; gps.gprmc.lat, &amp; gps.gprmc.ns, &amp; gps.gprmc.lon, &amp; gps.gprmc.ew, &amp; gps.gprmc.speed, &amp; gps.gprmc.direction, \</span><br><span class="line">        				&amp; gps.gprmc.utcDate.day, &amp; gps.gprmc.utcDate.mounth, &amp; gps.gprmc.utcDate.year, &amp; gps.gprmc.declination,     &amp;gps.gprmc.declin_ew, &amp; gps.gprmc.mode);</span><br><span class="line">        NRF_LOG_INFO(<span class="string">&quot;gps.gprmc.lat = %d, gps.gprmc.lon = %d\r\n&quot;</span>,gps.gprmc.lat,gps.gprmc.lon);</span><br><span class="line">        NRF_LOG_INFO(<span class="string">&quot;res = %d\r\n&quot;</span>,ret_sscanf);</span><br><span class="line">        <span class="keyword">if</span> (ret_sscanf &gt; <span class="number">8</span>) </span><br><span class="line">        &#123;</span><br><span class="line">            ret = <span class="literal">true</span>;</span><br><span class="line">            gps.report_data.gps_info.lat = (<span class="keyword">int</span>)(gps.gprmc.lat/<span class="number">100</span>) + (gps.gprmc.lat/<span class="number">100.0</span> - (<span class="keyword">int</span>)(gps.gprmc.lat/<span class="number">100</span>)) *<span class="number">100.0</span> / <span class="number">60.0</span>;<span class="comment">//转换成dd.ddddd</span></span><br><span class="line">            gps.report_data.gps_info.lon = (<span class="keyword">int</span>)(gps.gprmc.lon/<span class="number">100</span>) + (gps.gprmc.lon/<span class="number">100.0</span> - (<span class="keyword">int</span>)(gps.gprmc.lon/<span class="number">100</span>)) *<span class="number">100.0</span> / <span class="number">60.0</span>;<span class="comment">//转换成dd.ddddd</span></span><br><span class="line">            NRF_LOG_INFO(<span class="string">&quot;gps.report_data.lat = %d, gps.report_data.lon = %d\r\n&quot;</span>,gps.report_data.gps_info.lat,gps.report_data.gps_info.lon);</span><br><span class="line">            GPS_POWER_OFF;</span><br><span class="line">            gps_parse_count = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ret; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>GPS校验函数：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	hb：高位</span></span><br><span class="line"><span class="comment">	lb：低位</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">uint8_t</span> <span class="title">AsciiToHexVal</span><span class="params">(<span class="keyword">uint8_t</span> h_b,<span class="keyword">uint8_t</span> l_b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">uint8_t</span> hex_val;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span>((h_b &gt;= <span class="string">&#x27;0&#x27;</span>)&amp;&amp;(h_b &lt;= <span class="string">&#x27;9&#x27;</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		hex_val = h_b - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>((h_b &gt;= <span class="string">&#x27;A&#x27;</span>)&amp;&amp;(h_b &lt;= <span class="string">&#x27;F&#x27;</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		hex_val = h_b - <span class="string">&#x27;A&#x27;</span> + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>((h_b &gt;= <span class="string">&#x27;a&#x27;</span>)&amp;&amp;(h_b &lt;= <span class="string">&#x27;f&#x27;</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		hex_val = h_b - <span class="string">&#x27;a&#x27;</span> + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	hex_val &lt;&lt;= <span class="number">4</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span>((l_b &gt;= <span class="string">&#x27;0&#x27;</span>)&amp;&amp;(l_b &lt;= <span class="string">&#x27;9&#x27;</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		hex_val |= l_b - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>((l_b &gt;= <span class="string">&#x27;A&#x27;</span>)&amp;&amp;(l_b &lt;= <span class="string">&#x27;F&#x27;</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		hex_val |= l_b - <span class="string">&#x27;A&#x27;</span> + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>((l_b &gt;= <span class="string">&#x27;a&#x27;</span>)&amp;&amp;(l_b &lt;= <span class="string">&#x27;f&#x27;</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		hex_val |= l_b - <span class="string">&#x27;a&#x27;</span> + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> hex_val;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">uint8_t</span> <span class="title">GpsFrameCheck</span><span class="params">(<span class="keyword">char</span> *gps_data, <span class="keyword">uint8_t</span> len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">uint8_t</span> i,res = <span class="literal">false</span>;</span><br><span class="line">	<span class="keyword">uint8_t</span> gps_check = <span class="number">0</span>,cal_check =<span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;len<span class="number">-3</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		cal_check ^= gps_data[i];</span><br><span class="line">	&#125;</span><br><span class="line">	gps_check = AsciiToHexVal(gps_data[len<span class="number">-2</span>],gps_data[len<span class="number">-1</span>]);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span>(gps_check == cal_check)</span><br><span class="line">	&#123;</span><br><span class="line">		NRF_LOG_INFO(<span class="string">&quot;gps_check == cal_check\r\n&quot;</span>,gps_check);</span><br><span class="line">		res = <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://github.com/eagle230/nate.github.io/2020/12/28/GNRMC%20Parser/" title="GNRMC定位信息的读取与解析" target="_blank" rel="external">https://github.com/eagle230/nate.github.io/2020/12/28/GNRMC%20Parser/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/eagle230" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/nate.github.io/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/eagle230" target="_blank"><span class="text-dark">Nate</span><small class="ml-1x">Embedded Software Developer</small></a></h3>
+        <div>喜欢各种瞎折腾。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/nate.github.io/2020/12/28/STM32%20IDLE%20+%20DMA/" title="DMA + IDLE中断实现接收不定长数据"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/nate.github.io/2020/12/22/plan/" title="个人提升计划"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/eagle230" target="_blank" title="Github" ><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/u/2773473047?is_all=1" target="_blank" title="Weibo" ><i class="icon icon-weibo"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/nate.github.io/js/plugin.min.js"></script>
+
+
+<script src="/nate.github.io/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/nate.github.io/',
+        CONTENT_URL: '/nate.github.io/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/nate.github.io/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: true,
+    notify: true,
+    appId: 'Qc9RmLDdymDfcEg2P6bBBgzB-MdYXbMMI',
+    appKey: '21udWRLtX2x1SohE7bmemzns',
+    placeholder: 'Just go go',
+    avatar: 'wavatar',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
