@@ -6,7 +6,7 @@
   <link href="https://github.com/eagle230/nate.github.io/atom.xml" rel="self"/>
   
   <link href="https://github.com/eagle230/nate.github.io/"/>
-  <updated>2020-12-28T09:10:59.523Z</updated>
+  <updated>2020-12-28T09:20:01.706Z</updated>
   <id>https://github.com/eagle230/nate.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://github.com/eagle230/nate.github.io/2020/12/22/plan/"/>
     <id>https://github.com/eagle230/nate.github.io/2020/12/22/plan/</id>
     <published>2020-12-22T12:11:41.963Z</published>
-    <updated>2020-12-28T09:10:59.523Z</updated>
+    <updated>2020-12-28T09:20:01.706Z</updated>
     
     <content type="html"><![CDATA[<h1 id="计划"><a href="#计划" class="headerlink" title="计划"></a>计划</h1><h2 id="1-整理和编写开源代码库"><a href="#1-整理和编写开源代码库" class="headerlink" title="1.整理和编写开源代码库"></a>1.整理和编写开源代码库</h2><p>目标：方便以后开发移植和帮助自己深入理解实现原理和提高编程能力。</p><ul><li><input disabled="" type="checkbox"> ring buffer 【环形缓冲区】</li><li><input disabled="" type="checkbox"> AT指令【AT发送和解析框架】</li><li><input disabled="" type="checkbox"> GPS Parser【GPS解析库】</li><li><input disabled="" type="checkbox"> log通用打印【方便移植、可设置log等级、可类实现shell功能的通用库】</li></ul>]]></content>
     
